@@ -2,13 +2,15 @@ import React from "react";
 import { FormGroup, Label, Input, Form } from "reactstrap";
 
 export default function InputBox({
-  content = "",
+  content,
   disabled,
-  setContent,
+  onChange,
+  source,
 }: {
-  content?: string;
+  content: string;
   disabled: boolean;
-  setContent?: React.ChangeEventHandler;
+  onChange?: React.ChangeEventHandler;
+  source: string;
 }) {
   return (
     <div>
@@ -20,8 +22,8 @@ export default function InputBox({
             id="inputArea"
             name="text"
             onChange={event => {
-              if (setContent) {
-                setContent(event);
+              if (onChange) {
+                onChange(event);
               }
             }}
             type="textarea"
