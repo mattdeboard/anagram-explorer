@@ -5,12 +5,10 @@ export default function InputBox({
   content,
   disabled,
   onChange,
-  source,
 }: {
   content: string;
   disabled: boolean;
   onChange?: React.ChangeEventHandler;
-  source: string;
 }) {
   return (
     <div>
