@@ -19,7 +19,6 @@ function App() {
   const handleInput = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const proposedInput = event.target.value;
-      console.log(event.type);
       const lastLetter = proposedInput[proposedInput.length - 1];
       if (
         !proposedInput.length ||
@@ -28,18 +27,11 @@ function App() {
       ) {
         setInput(proposedInput);
         setInputIndex(characterIndex(proposedInput));
-
-        if (proposedInput.length > input.length)
-          setSourceIndex(prev => {
-            return {
-              ...prev,
-              [lastLetter]: prev[lastLetter] - 1,
-            };
-          });
-      } else {
+        // If we're adding, decrement the count for that character. Otherwise, increment.
+        const changeAmount = proposedInput.length > input.length ? -1 : 1;
         setSourceIndex(prev => ({
           ...prev,
-          [lastLetter]: prev[lastLetter] + 1,
+          [lastLetter]: prev[lastLetter] + changeAmount,
         }));
       }
     },
@@ -60,7 +52,6 @@ function App() {
           content={input}
           disabled={inputDisabled}
           onChange={handleInput}
-          source={source}
         />
         <Button
           color="primary"
