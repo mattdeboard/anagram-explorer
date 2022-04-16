@@ -19,23 +19,27 @@ function App() {
   const handleInput = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const proposedInput = event.target.value;
-      const lastLetter = proposedInput[proposedInput.length - 1];
-      if (
-        !proposedInput.length ||
-        (Object.keys(sourceIndex).includes(lastLetter) &&
-          sourceIndex[lastLetter] > 0)
-      ) {
-        setInput(proposedInput);
-        setInputIndex(characterIndex(proposedInput));
-        // If we're adding, decrement the count for that character. Otherwise, increment.
-        const changeAmount = proposedInput.length > input.length ? -1 : 1;
+      const lastLetter =
+        proposedInput[proposedInput.length - 1]?.toLocaleLowerCase();
+      const letterInSource = Object.keys(sourceIndex).includes(lastLetter);
+      const op =
+        proposedInput.length > input.length
+          ? ("add" as const)
+          : ("delete" as const);
+
+      if (!proposedInput.length || letterInSource) {
+        console.log("Hi");
+        if (op === "delete" || sourceIndex[lastLetter] > 0) {
+          setInput(proposedInput);
+          setInputIndex(characterIndex(proposedInput));
+        }
         setSourceIndex(prev => ({
           ...prev,
-          [lastLetter]: prev[lastLetter] + changeAmount,
+          [lastLetter]: prev[lastLetter] + (op === "add" ? -1 : 1),
         }));
       }
     },
-    [input, sourceIndex, setInput, setInputIndex],
+    [input, sourceIndex],
   );
 
   React.useEffect(() => {
@@ -60,6 +64,8 @@ function App() {
             if (contents.length) {
               setSource(contents);
               setSourceIndex(characterIndex(contents));
+              setInput("");
+              setInputIndex({});
               setInputDisabled(false);
             }
           }}
