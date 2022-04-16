@@ -76,6 +76,17 @@ function App() {
         >
           Paste clipboard contents
         </Button>
+        <Button
+          color="secondary"
+          onClick={() => {
+            setSource("");
+            setSourceIndex({});
+            setInputDisabled(true);
+          }}
+          size="lg"
+        >
+          Reset Source
+        </Button>
       </Container>
     </div>
   );
