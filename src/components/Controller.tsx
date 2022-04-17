@@ -6,6 +6,23 @@ import { InputBox, SourceBox } from ".";
 export default function Controller() {
   const [{ inputDisabled, inputField, source, sourceIndex }, dispatch] =
     React.useReducer(reducer, INITIAL_STATE);
+  const setSource = React.useCallback(
+    (value: string) => dispatch({ type: "updateSource", value }),
+    [dispatch],
+  );
+  const setSourceIndex = React.useCallback(
+    (value: Partial<State["sourceIndex"]>) =>
+      dispatch({ type: "updateSourceIndex", value }),
+    [dispatch],
+  );
+  const setInput = React.useCallback(
+    (value: string) => dispatch({ type: "updateInputField", value }),
+    [dispatch],
+  );
+  const setInputDisabled = React.useCallback(
+    (value: boolean) => dispatch({ type: "updateInputDisabled", value }),
+    [dispatch],
+  );
   const handleInput = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const proposedInput = event.target.value;
@@ -29,25 +46,9 @@ export default function Controller() {
         );
       }
     },
-    [inputField, sourceIndex],
+    [inputField.length, setInput, setSourceIndex, sourceIndex],
   );
-  const setSource = React.useCallback(
-    (value: string) => dispatch({ type: "updateSource", value }),
-    [dispatch, source],
-  );
-  const setSourceIndex = React.useCallback(
-    (value: Partial<State["sourceIndex"]>) =>
-      dispatch({ type: "updateSourceIndex", value }),
-    [dispatch, sourceIndex],
-  );
-  const setInput = React.useCallback(
-    (value: string) => dispatch({ type: "updateInputField", value }),
-    [dispatch, inputField],
-  );
-  const setInputDisabled = React.useCallback(
-    (value: boolean) => dispatch({ type: "updateInputDisabled", value }),
-    [dispatch, inputDisabled],
-  );
+
   return (
     <Container>
       <SourceBox content={source} contentIndex={sourceIndex} />
