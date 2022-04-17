@@ -24,6 +24,9 @@ export default function Controller() {
     [dispatch],
   );
   const handleInput = React.useCallback(
+    // The logic for conditional registration of keystrokes. Only keystrokes for characters that are
+    // still available as choices from the source text will be registered. One exception is spaces:
+    // Unlimited spaces are allowed.
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const proposedInput = event.target.value;
       const lastLetter =
@@ -50,7 +53,7 @@ export default function Controller() {
   );
 
   return (
-    <Container>
+    <Container style={{ width: "50%" }}>
       <SourceBox content={source} contentIndex={sourceIndex} />
       <InputBox
         content={inputField}
@@ -68,7 +71,6 @@ export default function Controller() {
             setInputDisabled(false);
           }
         }}
-        size="lg"
       >
         Paste clipboard contents
       </Button>
@@ -79,7 +81,6 @@ export default function Controller() {
           setSourceIndex({});
           setInputDisabled(true);
         }}
-        size="lg"
       >
         Reset Source
       </Button>
