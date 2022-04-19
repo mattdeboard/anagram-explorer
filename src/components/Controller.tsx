@@ -32,21 +32,15 @@ export default function Controller() {
       const lastLetter =
         proposedInput[proposedInput.length - 1]?.toLocaleLowerCase();
       const letterInSource = Object.keys(sourceIndex).includes(lastLetter);
-      const op =
-        proposedInput.length > inputField.length
-          ? ("add" as const)
-          : ("delete" as const);
 
       if (!proposedInput.length || letterInSource) {
-        if (op === "delete" || sourceIndex[lastLetter] > 0) {
+        if (
+          inputField.length < proposedInput.length ||
+          sourceIndex[lastLetter] > 0
+        ) {
           setInput(proposedInput);
         }
-        setSourceIndex(
-          produce(sourceIndex, draft => {
-            draft[lastLetter] =
-              sourceIndex[lastLetter] + (op === "add" ? -1 : 1);
-          }),
-        );
+        setSourceIndex(characterIndex(proposedInput));
       }
     },
     [inputField.length, setInput, setSourceIndex, sourceIndex],
